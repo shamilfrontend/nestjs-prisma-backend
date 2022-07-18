@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Code {
+  id          Int       @id @default(autoincrement())
+  phone       String    @db.VarChar @unique
+  value       String    @db.VarChar
+  attempt     Int       @default(1)
+  nextCheckAt DateTime? @map("next_check_at")
+  expiresAt   DateTime  @map("expires_at")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamp()
+
+  @@map("codes")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  type        UserType  @default(business)
+  name        String    @db.VarChar
+  phone       String    @db.VarChar @unique
+  email       String?   @db.VarChar @unique
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamp()
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamp()
+
+  @@map("users")
+}
+
+enum UserType {
+  business
+  personal
+
+  @@map("user_type_enum")
+}
