@@ -1,4 +1,4 @@
-# NextJS test backend
+# NestJS and prisna backend
 
 ## Env vars
 ```bash
